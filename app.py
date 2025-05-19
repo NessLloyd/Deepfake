@@ -40,14 +40,22 @@ if uploaded_file:
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
     
     # Folder containing images
+    iimport time
+
+    st.markdown("## Prediction Results")
+    st.markdown("Sample prediction results produced by our deepfake detection model.")
+
     image_folder = "gallery"
     image_files = sorted([img for img in os.listdir(image_folder) if img.endswith(('.png', '.jpg', '.jpeg'))])
+
+    slideshow = st.empty()  # Placeholder for image
     
-    # Streamlit image slider
-    index = st.slider("Prediction Results", 0, len(image_files)-1, 0)
-    image_path = os.path.join(image_folder, image_files[index])
-    image = Image.open(image_path)
-    st.image(image, caption=f"Image: {image_files[index]}", use_container_width=True)
+    for img_file in image_files:
+    img_path = os.path.join(image_folder, img_file)
+    image = Image.open(img_path)
+    slideshow.image(image, caption=f"Image: {img_file}", use_container_width=True)
+    time.sleep(2)
+
 
     # Layout: Model Info
     st.markdown("---")
