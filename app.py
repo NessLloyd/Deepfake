@@ -37,31 +37,34 @@ if uploaded_file:
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
 
-# Section: Gallery
+import streamlit.components.v1 as components
+
+# Section title
 st.markdown("---")
 st.markdown("<h2 style='text-align:center;'>Prediction Results</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#b06666;'>Sample prediction results produced by our deepfake detection model</p>", unsafe_allow_html=True)
 
-# Static image URLs from GitHub
+# Define gallery image URLs
 image_urls = [
     f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/gallery/gallery-{i}.png"
     for i in range(1, 13)
 ]
 
-# Create scrollable HTML block
+# Create horizontal scrolling HTML
 gallery_html = """
-<div style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; padding: 20px;">
+<div style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; padding: 20px; background: #fafafa;">
 """
 for url in image_urls:
     gallery_html += f"""
-        <div style="flex: 0 0 auto;">
-            <img src="{url}" style="height:300px; border-radius:10px;" />
-        </div>
+    <div style="flex: 0 0 auto;">
+        <img src="{url}" style="height:300px; border-radius:10px;" />
+    </div>
     """
 gallery_html += "</div>"
 
-# Render gallery
-st.markdown(gallery_html, unsafe_allow_html=True)
+# Render it using components.html
+components.html(gallery_html, height=340)
+
 
 # Section: Model Info
 st.markdown("---")
