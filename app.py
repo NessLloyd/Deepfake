@@ -50,58 +50,58 @@ if uploaded_file:
     image_files = sorted([f for f in os.listdir(image_folder) if f.endswith(('.png', '.jpg', '.jpeg'))])
     
     # Generate HTML content
-        carousel_images = "".join(
-            f"<div class='slide'><img src='gallery/{img}' alt='{img}' /></div>" for img in image_files
-        )
-        
-        carousel_html = f"""
-        <style>
-        .carousel {{
-          display: flex;
-          overflow: hidden;
-          width: 100%;
-          height: 540px;
-          position: relative;
-          margin-top: 20px;
-        }}
-        
-        .slide {{
-          min-width: 100%;
-          transition: transform 1s ease-in-out;
-        }}
-        
-        .carousel-container {{
-          display: flex;
-          animation: scroll 30s linear infinite;
-        }}
-        
-        .carousel img {{
-          width: 100%;
-          object-fit: contain;
-          border-radius: 12px;
-        }}
-        
-        @keyframes scroll {{
-          0% {{ transform: translateX(0%); }}
-          20% {{ transform: translateX(0%); }}
-          25% {{ transform: translateX(-100%); }}
-          45% {{ transform: translateX(-100%); }}
-          50% {{ transform: translateX(-200%); }}
-          70% {{ transform: translateX(-200%); }}
-          75% {{ transform: translateX(-300%); }}
-          95% {{ transform: translateX(-300%); }}
-          100% {{ transform: translateX(-400%); }}
-        }}
-        </style>
-        
-        <div class="carousel">
-          <div class="carousel-container">
-            {carousel_images}
-          </div>
-        </div>
-        """
-        
-        html(carousel_html, height=540)
+    carousel_images = "".join(
+        f"<div class='slide'><img src='gallery/{img}' alt='{img}' /></div>" for img in image_files
+    )
+    
+    carousel_html = f"""
+    <style>
+    .carousel {{
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      height: 540px;
+      position: relative;
+      margin-top: 20px;
+    }}
+    
+    .slide {{
+      min-width: 100%;
+      transition: transform 1s ease-in-out;
+    }}
+    
+    .carousel-container {{
+      display: flex;
+      animation: scroll 30s linear infinite;
+    }}
+    
+    .carousel img {{
+      width: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }}
+    
+    @keyframes scroll {{
+      0% {{ transform: translateX(0%); }}
+      20% {{ transform: translateX(0%); }}
+      25% {{ transform: translateX(-100%); }}
+      45% {{ transform: translateX(-100%); }}
+      50% {{ transform: translateX(-200%); }}
+      70% {{ transform: translateX(-200%); }}
+      75% {{ transform: translateX(-300%); }}
+      95% {{ transform: translateX(-300%); }}
+      100% {{ transform: translateX(-400%); }}
+    }}
+    </style>
+    
+    <div class="carousel">
+      <div class="carousel-container">
+        {carousel_images}
+      </div>
+    </div>
+    """
+    
+    html(carousel_html, height=540)
 
 
 
