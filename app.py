@@ -49,90 +49,76 @@ gallery_images = sorted([
     if f.endswith((".png", ".jpg", ".jpeg"))
 ])
 
-# Create HTML for carousel
+# Create HTML for Swiper carousel
 slides_html = ""
 for image_file in gallery_images:
     image_url = f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/{gallery_folder}/{image_file}"
-    slides_html += f"""
-    <div class='carousel-item'>
-        <img src='{image_url}' />
-    </div>
-    """
+    slides_html += f"<div class='swiper-slide'><img src='{image_url}'/></div>"
 
 carousel_code = f"""
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <style>
-.carousel-wrapper {{
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 360px;
-    background: #f5f5f5;
-    padding: 20px 0;
+.swiper-container {{
+  width: 100%;
+  padding: 40px 0;
 }}
-.carousel-track {{
-    display: flex;
-    gap: 40px;
-    animation: scroll-carousel 80s steps(20) infinite;
+.swiper-slide {{
+  width: 280px;
+  height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.5s ease;
 }}
-.carousel-item {{
-    flex: 0 0 auto;
-    width: 300px;
-    height: 300px;
-    transition: transform 0.6s;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.swiper-slide img {{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }}
-.carousel-item img {{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.swiper-slide-active {{
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }}
-.carousel-track .carousel-item:nth-child(6n+4) img {{
-    transform: scale(1.1);
-    z-index: 2;
-    border: 3px solid #3f51b5;
+.swiper-pagination-bullet {{
+  background: #bbb;
+  opacity: 1;
 }}
-
-/* Dots Navigation */
-.carousel-dots {{
-    display: flex;
-    justify-content: center;
-    margin-top: 12px;
-}}
-.carousel-dots span {{
-    width: 12px;
-    height: 12px;
-    margin: 0 6px;
-    background: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background 0.3s;
-}}
-.carousel-dots span.active {{
-    background: #3f51b5;
-}}
-
-@keyframes scroll-carousel {{
-  0% {{ transform: translateX(0); }}
-  100% {{ transform: translateX(-3000px); }}
+.swiper-pagination-bullet-active {{
+  background: #3f51b5;
 }}
 </style>
-<div class='carousel-wrapper'>
-  <div class='carousel-track'>
+
+<div class="swiper-container">
+  <div class="swiper-wrapper">
     {slides_html}
-    {slides_html} <!-- duplicate for looping -->
   </div>
-  <div class='carousel-dots'>
-    {''.join(['<span class="active"></span>' if i == 0 else '<span></span>' for i in range(len(gallery_images))])}
-  </div>
+  <div class="swiper-pagination"></div>
 </div>
+
+<script>
+  const swiper = new Swiper('.swiper-container', {{
+    slidesPerView: 6,
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {{
+      delay: 2500,
+      disableOnInteraction: false,
+    }},
+    pagination: {{
+      el: '.swiper-pagination',
+      clickable: true,
+    }},
+  }});
+</script>
 """
 
-st.components.v1.html(carousel_code, height=420, scrolling=False)
+st.components.v1.html(carousel_code, height=460, scrolling=False)
 
 # Model info
 st.markdown("---")
