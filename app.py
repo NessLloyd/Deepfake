@@ -8,6 +8,37 @@ import os
 # Set page config
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
 
+# Inject light theme and CSS for cleaner appearance
+st.markdown("""
+    <style>
+    body {
+        background-color: white;
+        color: black;
+    }
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    .stFileUploader, .stButton>button {
+        background-color: #f5f5f5;
+        color: black;
+    }
+    .title-style {
+        font-size: 2.5em;
+        font-weight: bold;
+        text-align: center;
+        color: #222;
+        margin-bottom: 0.2em;
+    }
+    .subheader-style {
+        text-align: center;
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 2em;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Load model
 @st.cache_resource
 def load_best_model():
@@ -15,9 +46,10 @@ def load_best_model():
 
 model = load_best_model()
 
-# Layout: Title
-st.title("AI or Real - Deepfake Detection")
-st.markdown("Upload a **face image**, and we’ll tell you if it's a deepfake or not.")
+# Header Section
+st.markdown("<div class='title-style'>AI or Real - Deepfake Detection</div>", unsafe_allow_html=True)
+st.markdown("<div class='subheader-style'>Upload a face image, and we’ll tell you if it's a deepfake or not.</div>", unsafe_allow_html=True)
+
 
 # File upload
 uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
