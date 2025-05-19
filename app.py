@@ -44,7 +44,7 @@ if uploaded_file:
     image_files = sorted([img for img in os.listdir(image_folder) if img.endswith(('.png', '.jpg', '.jpeg'))])
     
     # Streamlit image slider
-    index = st.slider("Browse uploaded face samples", 0, len(image_files)-1, 0)
+    index = st.slider("Prediction Results", 0, len(image_files)-1, 0)
     image_path = os.path.join(image_folder, image_files[index])
     image = Image.open(image_path)
     st.image(image, caption=f"Image: {image_files[index]}", use_container_width=True)
