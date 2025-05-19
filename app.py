@@ -51,7 +51,7 @@ gallery_images = sorted([
 
 # Create HTML for carousel
 slides_html = ""
-for i, image_file in enumerate(gallery_images):
+for image_file in gallery_images:
     image_url = f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/{gallery_folder}/{image_file}"
     slides_html += f"""
     <div class='carousel-item'>
@@ -65,20 +65,20 @@ carousel_code = f"""
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 340px;
+    height: 360px;
     background: #f5f5f5;
     padding: 20px 0;
 }}
 .carousel-track {{
     display: flex;
     gap: 40px;
-    animation: scroll-step 30s linear infinite;
+    animation: scroll-carousel 60s linear infinite;
 }}
 .carousel-item {{
     flex: 0 0 auto;
-    width: 270px;
-    height: 280px;
-    transition: transform 0.5s;
+    width: 320px;
+    height: 320px;
+    transition: transform 0.6s;
     position: relative;
 }}
 .carousel-item img {{
@@ -88,34 +88,36 @@ carousel_code = f"""
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }}
-.carousel-item:nth-child(6n+3) img {{
-    transform: scale(1.1);
+.carousel-track .carousel-item:nth-child(7n+4) img {{
+    transform: scale(1.15);
     z-index: 2;
-    border: 2px solid #555;
+    border: 2px solid #444;
 }}
-@keyframes scroll-step {{
-  0%   {{ transform: translateX(0); }}
-  16.6%{{ transform: translateX(-270px); }}
-  33.3%{{ transform: translateX(-540px); }}
-  50%  {{ transform: translateX(-810px); }}
-  66.6%{{ transform: translateX(-1080px); }}
-  83.3%{{ transform: translateX(-1350px); }}
-  100% {{ transform: translateX(-1620px); }}
+@keyframes scroll-carousel {{
+  0% {{ transform: translateX(0); }}
+  12.5% {{ transform: translateX(-360px); }}
+  25% {{ transform: translateX(-720px); }}
+  37.5% {{ transform: translateX(-1080px); }}
+  50% {{ transform: translateX(-1440px); }}
+  62.5% {{ transform: translateX(-1800px); }}
+  75% {{ transform: translateX(-2160px); }}
+  87.5% {{ transform: translateX(-2520px); }}
+  100% {{ transform: translateX(-2880px); }}
 }}
 </style>
 <div class='carousel-wrapper'>
-    <div class='carousel-track'>
-        {slides_html}
-        {slides_html}
-    </div>
+  <div class='carousel-track'>
+    {slides_html}
+    {slides_html} <!-- duplicate for looping -->
+  </div>
 </div>
 """
 
-st.components.v1.html(carousel_code, height=360, scrolling=False)
+st.components.v1.html(carousel_code, height=400, scrolling=False)
 
 # Model info
 st.markdown("---")
-st.markdown("#### 🧬 Model Information")
+st.markdown("####  Model Information")
 st.markdown("""
 - **Architecture**: EfficientNetB0
 - **Training Accuracy**: 83%
