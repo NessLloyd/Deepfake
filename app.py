@@ -72,14 +72,17 @@ carousel_code = f"""
 .carousel-track {{
     display: flex;
     gap: 40px;
-    animation: scroll-carousel 60s linear infinite;
+    animation: scroll-carousel 80s steps(20) infinite;
 }}
 .carousel-item {{
     flex: 0 0 auto;
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     transition: transform 0.6s;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }}
 .carousel-item img {{
     width: 100%;
@@ -88,21 +91,34 @@ carousel_code = f"""
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }}
-.carousel-track .carousel-item:nth-child(7n+4) img {{
-    transform: scale(1.15);
+.carousel-track .carousel-item:nth-child(6n+4) img {{
+    transform: scale(1.1);
     z-index: 2;
-    border: 2px solid #444;
+    border: 3px solid #3f51b5;
 }}
+
+/* Dots Navigation */
+.carousel-dots {{
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}}
+.carousel-dots span {{
+    width: 12px;
+    height: 12px;
+    margin: 0 6px;
+    background: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background 0.3s;
+}}
+.carousel-dots span.active {{
+    background: #3f51b5;
+}}
+
 @keyframes scroll-carousel {{
   0% {{ transform: translateX(0); }}
-  12.5% {{ transform: translateX(-360px); }}
-  25% {{ transform: translateX(-720px); }}
-  37.5% {{ transform: translateX(-1080px); }}
-  50% {{ transform: translateX(-1440px); }}
-  62.5% {{ transform: translateX(-1800px); }}
-  75% {{ transform: translateX(-2160px); }}
-  87.5% {{ transform: translateX(-2520px); }}
-  100% {{ transform: translateX(-2880px); }}
+  100% {{ transform: translateX(-3000px); }}
 }}
 </style>
 <div class='carousel-wrapper'>
@@ -110,14 +126,17 @@ carousel_code = f"""
     {slides_html}
     {slides_html} <!-- duplicate for looping -->
   </div>
+  <div class='carousel-dots'>
+    {''.join(['<span class="active"></span>' if i == 0 else '<span></span>' for i in range(len(gallery_images))])}
+  </div>
 </div>
 """
 
-st.components.v1.html(carousel_code, height=400, scrolling=False)
+st.components.v1.html(carousel_code, height=420, scrolling=False)
 
 # Model info
 st.markdown("---")
-st.markdown("####  Model Information")
+st.markdown("#### 🧬 Model Information")
 st.markdown("""
 - **Architecture**: EfficientNetB0
 - **Training Accuracy**: 83%
