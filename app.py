@@ -40,21 +40,69 @@ if uploaded_file:
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
     
     # Folder containing images
-    import time
+    from streamlit.components.v1 import html
 
-    st.markdown("## Prediction Results")
-    st.markdown("Sample prediction results produced by our deepfake detection model.")
-
-    image_folder = "gallery"
-    image_files = sorted([img for img in os.listdir(image_folder) if img.endswith(('.png', '.jpg', '.jpeg'))])
-
-    slideshow = st.empty()  # Placeholder for image
+    st.markdown("## 🎯 Prediction Results", unsafe_allow_html=True)
+    st.markdown("#### <span style='color:#ba6b6c;'>Sample prediction results produced by our deepfake detection model</span>", unsafe_allow_html=True)
     
-    for img_file in image_files:
-        img_path = os.path.join(image_folder, img_file)
-        image = Image.open(img_path)
-        slideshow.image(image, caption=f"Image: {img_file}", use_container_width=True)
-        time.sleep(2)
+    # Load image file paths from gallery
+    image_folder = "gallery"
+    image_files = sorted([f for f in os.listdir(image_folder) if f.endswith(('.png', '.jpg', '.jpeg'))])
+    
+    # Generate HTML content
+        carousel_images = "".join(
+            f"<div class='slide'><img src='gallery/{img}' alt='{img}' /></div>" for img in image_files
+        )
+        
+        carousel_html = f"""
+        <style>
+        .carousel {{
+          display: flex;
+          overflow: hidden;
+          width: 100%;
+          height: 540px;
+          position: relative;
+          margin-top: 20px;
+        }}
+        
+        .slide {{
+          min-width: 100%;
+          transition: transform 1s ease-in-out;
+        }}
+        
+        .carousel-container {{
+          display: flex;
+          animation: scroll 30s linear infinite;
+        }}
+        
+        .carousel img {{
+          width: 100%;
+          object-fit: contain;
+          border-radius: 12px;
+        }}
+        
+        @keyframes scroll {{
+          0% {{ transform: translateX(0%); }}
+          20% {{ transform: translateX(0%); }}
+          25% {{ transform: translateX(-100%); }}
+          45% {{ transform: translateX(-100%); }}
+          50% {{ transform: translateX(-200%); }}
+          70% {{ transform: translateX(-200%); }}
+          75% {{ transform: translateX(-300%); }}
+          95% {{ transform: translateX(-300%); }}
+          100% {{ transform: translateX(-400%); }}
+        }}
+        </style>
+        
+        <div class="carousel">
+          <div class="carousel-container">
+            {carousel_images}
+          </div>
+        </div>
+        """
+        
+        html(carousel_html, height=540)
+
 
 
     # Layout: Model Info
