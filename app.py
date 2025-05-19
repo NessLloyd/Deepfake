@@ -59,80 +59,59 @@ for i, image_file in enumerate(gallery_images):
     </div>
     """
 
-dots_html = "".join([f"<span class='dot' onclick='goToSlide({i})'></span>" for i in range(len(gallery_images))])
-
 carousel_code = f"""
 <style>
-.carousel-container {{
-    width: 100%;
+.carousel-wrapper {{
+    position: relative;
     overflow: hidden;
+    width: 100%;
+    height: 340px;
     background: #f5f5f5;
     padding: 20px 0;
-    position: relative;
 }}
 .carousel-track {{
     display: flex;
-    gap: 20px;
-    width: calc(300px * {len(gallery_images) * 2});
-    animation: scroll 60s linear infinite;
+    gap: 40px;
+    animation: scroll-step 30s linear infinite;
 }}
 .carousel-item {{
     flex: 0 0 auto;
-    width: 250px;
-    transition: transform 0.3s ease-in-out;
+    width: 270px;
+    height: 280px;
+    transition: transform 0.5s;
+    position: relative;
 }}
 .carousel-item img {{
     width: 100%;
-    height: 200px;
-    border-radius: 10px;
+    height: 100%;
     object-fit: cover;
+    border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }}
-@keyframes scroll {{
-    0% {{ transform: translateX(0); }}
-    100% {{ transform: translateX(-50%); }}
+.carousel-item:nth-child(6n+3) img {{
+    transform: scale(1.1);
+    z-index: 2;
+    border: 2px solid #555;
 }}
-.carousel-dots {{
-    text-align: center;
-    margin-top: 10px;
-}}
-.dot {{
-    display: inline-block;
-    height: 12px;
-    width: 12px;
-    margin: 0 4px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-}}
-.dot.active {{
-    background-color: #717171;
+@keyframes scroll-step {{
+  0%   {{ transform: translateX(0); }}
+  16.6%{{ transform: translateX(-270px); }}
+  33.3%{{ transform: translateX(-540px); }}
+  50%  {{ transform: translateX(-810px); }}
+  66.6%{{ transform: translateX(-1080px); }}
+  83.3%{{ transform: translateX(-1350px); }}
+  100% {{ transform: translateX(-1620px); }}
 }}
 </style>
-<div class='carousel-container'>
+<div class='carousel-wrapper'>
     <div class='carousel-track'>
         {slides_html}
         {slides_html}
     </div>
-    <div class='carousel-dots'>
-        {dots_html}
-    </div>
 </div>
-<script>
-let dots = document.querySelectorAll('.dot');
-dots.forEach((dot, i) => {{
-    dot.addEventListener('click', () => goToSlide(i));
-}});
-function goToSlide(index) {{
-    const track = document.querySelector('.carousel-track');
-    track.style.animation = 'none';
-    track.style.transform = `translateX(${{-index * 270}}px)`;
-}}
-</script>
 """
 
-st.components.v1.html(carousel_code, height=340, scrolling=False)
+st.components.v1.html(carousel_code, height=360, scrolling=False)
 
 # Model info
 st.markdown("---")
