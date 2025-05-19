@@ -1,12 +1,13 @@
 import streamlit as st
+
+# 🧠 Set page config FIRST — before anything else
+st.set_page_config(page_title="Deepfake Detection", layout="centered")
+
 import numpy as np
 from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import os
-    
-# Set page config FIRST
-st.set_page_config(page_title="Deepfake Detection", layout="centered")
 
 # Load model
 @st.cache_resource
@@ -15,10 +16,10 @@ def load_best_model():
 
 model = load_best_model()
 
-# Layout: Title
-st.set_page_config(page_title="Deepfake Detection", layout="centered")
+# UI Title
 st.title("AI or Real - Deepfake Detection")
 st.markdown("Upload a **face image**, and we’ll tell you if it's a deepfake or not.")
+
 
 # Layout: Upload + Prediction
 uploaded_file = st.file_uploader("📤 Upload an image", type=["jpg", "jpeg", "png"])
