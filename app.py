@@ -37,44 +37,38 @@ if uploaded_file:
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
 
-# Gallery Section Title
+# Section: Gallery
 st.markdown("---")
 st.markdown("<h2 style='text-align:center;'>Prediction Results</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#b06666;'>Sample prediction results produced by our deepfake detection model</p>", unsafe_allow_html=True)
 
-# Load gallery images
-image_folder = "gallery"
-image_files = sorted([
-    os.path.join(image_folder, f)
-    for f in os.listdir(image_folder)
-    if f.endswith((".png", ".jpg", ".jpeg"))
-])
+# Static image URLs from GitHub
+image_urls = [
+    f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/gallery/gallery-{i}.png"
+    for i in range(1, 13)
+]
 
-# Horizontal scrollable block of images
-scroll_block = """
+# Create scrollable HTML block
+gallery_html = """
 <div style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; padding: 20px;">
 """
+for url in image_urls:
+    gallery_html += f"""
+        <div style="flex: 0 0 auto;">
+            <img src="{url}" style="height:300px; border-radius:10px;" />
+        </div>
+    """
+gallery_html += "</div>"
 
-for path in image_files:
-    try:
-        scroll_block += f"""
-            <div style="flex: 0 0 auto;">
-                <img src="https://raw.githubusercontent.com/NessLloyd/Deepfake/main/{path}" style="height:300px; border-radius:10px;" />
-            </div>
-        """
-    except Exception as e:
-        st.error(f"Failed to load image: {path} — {e}")
+# Render gallery
+st.markdown(gallery_html, unsafe_allow_html=True)
 
-scroll_block += "</div>"
-
-st.markdown(scroll_block, unsafe_allow_html=True)
-
-# Model info
+# Section: Model Info
 st.markdown("---")
 st.markdown("#### 🧬 Model Information")
 st.markdown("""
-- **Architecture**: EfficientNetB0
-- **Training Accuracy**: 83%
-- **Validation AUC**: 0.91
+- **Architecture**: EfficientNetB0  
+- **Training Accuracy**: 83%  
+- **Validation AUC**: 0.91  
 - **Dataset**: Custom Celeb-DF subset
 """)
