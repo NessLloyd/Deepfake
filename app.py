@@ -3,6 +3,8 @@ import numpy as np
 from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
+import os
+    
 
 # Load model
 @st.cache_resource
@@ -33,6 +35,16 @@ if uploaded_file:
 
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
+    
+    # Folder containing images
+    image_folder = "gallery"
+    image_files = sorted([img for img in os.listdir(image_folder) if img.endswith(('.png', '.jpg', '.jpeg'))])
+    
+    # Streamlit image slider
+    index = st.slider("Browse uploaded face samples", 0, len(image_files)-1, 0)
+    image_path = os.path.join(image_folder, image_files[index])
+    image = Image.open(image_path)
+    st.image(image, caption=f"Image: {image_files[index]}", use_container_width=True)
 
     # Layout: Model Info
     st.markdown("---")
