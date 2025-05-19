@@ -8,10 +8,10 @@ import os
 # Set page config
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
 
-# Inject light theme and CSS for cleaner appearance
+# Inject light theme and CSS for full white background and improved layout
 st.markdown("""
     <style>
-    body {
+    html, body, .stApp {
         background-color: white;
         color: black;
     }
@@ -50,7 +50,6 @@ model = load_best_model()
 st.markdown("<div class='title-style'>AI or Real - Deepfake Detection</div>", unsafe_allow_html=True)
 st.markdown("<div class='subheader-style'>Upload a face image, and we’ll tell you if it's a deepfake or not.</div>", unsafe_allow_html=True)
 
-
 # File upload
 uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
 if uploaded_file:
@@ -68,6 +67,7 @@ if uploaded_file:
 
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
+
 
 # Gallery Section Title
 st.markdown("---")
