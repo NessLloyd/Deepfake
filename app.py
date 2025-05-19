@@ -4,7 +4,6 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import os
-import base64
 
 # Set page config
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
@@ -38,61 +37,37 @@ if uploaded_file:
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
 
-# Gallery
+# Gallery Section Title
 st.markdown("---")
-st.markdown("<h2 style='text-align: center;'>Prediction Results</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Sample prediction results produced by our deepfake detection model</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:center;'>Prediction Results</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#b06666;'>Sample prediction results produced by our deepfake detection model</p>", unsafe_allow_html=True)
 
+# Load gallery images
 image_folder = "gallery"
-image_files = sorted([img for img in os.listdir(image_folder) if img.endswith((".png", ".jpg", ".jpeg"))])
+image_files = sorted([
+    os.path.join(image_folder, f)
+    for f in os.listdir(image_folder)
+    if f.endswith((".png", ".jpg", ".jpeg"))
+])
 
-# Encode gallery images to base64
-carousel_items = ""
-for img_file in image_files:
-    full_path = os.path.join(image_folder, img_file)
-    with open(full_path, "rb") as file:
-        encoded = base64.b64encode(file.read()).decode()
-        carousel_items += f"<div class='gallery-slide'><img src='data:image/png;base64,{encoded}'></div>"
-
-carousel_html = f"""
-<style>
-.gallery-wrapper {{
-  overflow: hidden;
-  width: 100%;
-  height: 300px;
-  background: #f5f5f5;
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}}
-.gallery-container {{
-  display: flex;
-  gap: 20px;
-  animation: scroll-x 40s linear infinite;
-}}
-.gallery-slide img {{
-  height: 280px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}}
-
-@keyframes scroll-x {{
-  0% {{ transform: translateX(0); }}
-  100% {{ transform: translateX(-50%); }}
-}}
-</style>
-
-<div class="gallery-wrapper">
-  <div class="gallery-container">
-    {carousel_items}
-    {carousel_items} <!-- Duplicate for infinite loop -->
-  </div>
-</div>
+# Horizontal scrollable block of images
+scroll_block = """
+<div style="display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; padding: 20px;">
 """
 
-st.components.v1.html(carousel_html, height=350, scrolling=False)
+for path in image_files:
+    try:
+        scroll_block += f"""
+            <div style="flex: 0 0 auto;">
+                <img src="https://raw.githubusercontent.com/NessLloyd/Deepfake/main/{path}" style="height:300px; border-radius:10px;" />
+            </div>
+        """
+    except Exception as e:
+        st.error(f"Failed to load image: {path} — {e}")
+
+scroll_block += "</div>"
+
+st.markdown(scroll_block, unsafe_allow_html=True)
 
 # Model info
 st.markdown("---")
