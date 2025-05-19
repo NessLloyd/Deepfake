@@ -40,7 +40,7 @@ if uploaded_file:
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
     
     # Folder containing images
-    iimport time
+    import time
 
     st.markdown("## Prediction Results")
     st.markdown("Sample prediction results produced by our deepfake detection model.")
