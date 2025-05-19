@@ -160,12 +160,24 @@ st.markdown("""
 """)
 
 # Footer
-st.markdown("---")
+st.markdown("---", unsafe_allow_html=True)
 st.markdown(
     """
-    <div style="text-align: center; color: gray; font-size: 14px; margin-top: 30px;">
+    <style>
+    .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        color: gray;
+        font-size: 14px;
+        padding: 20px 0 10px 0;
+        margin-top: 50px;
+    }
+    </style>
+    <div class="footer">
         <p>📅 Completed on: <strong>May 19, 2025</strong></p>
-        <p>👥 Created by: Vanessa Lloyd, Vireak Sroeung, George Battikha, Zachary Heffernan, Luke Andriopolous</p>
+        <p>👥 Created by: Vanessa Lloyd, Vireak Sroeung, George Battikha, Zachary Heffernan, Luke Andripolous</p>
     </div>
     """,
     unsafe_allow_html=True
