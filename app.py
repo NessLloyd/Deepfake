@@ -147,7 +147,7 @@ with col2:
 # Accuracy and Loss Charts
 col1, col2 = st.columns(2)
 with col1:
-    st.image(image, caption="Accuracy Curve", use_container_width=True)
+    st.image("accuracy_curve.png", caption="Accuracy Curve", use_container_width=True)
 with col2:
     st.image("loss_curve.png", caption="Loss Curve", use_container_width=True)
 
