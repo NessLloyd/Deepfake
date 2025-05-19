@@ -34,15 +34,15 @@ if uploaded_file:
     col2.markdown(f"###  **Prediction:** `{label}`")
     col2.markdown(f"**Confidence:** `{confidence:.2%}`")
 
-# Layout: Model Info
-st.markdown("---")
-st.markdown("#### 🧬 Model Information")
-st.markdown("""
-- **Architecture**: EfficientNetB0
-- **Training Accuracy**: 83%
-- **Validation AUC**: 0.91
-- **Dataset**: Custom Celeb-DF subset
-""")
+    # Layout: Model Info
+    st.markdown("---")
+    st.markdown("#### 🧬 Model Information")
+    st.markdown("""
+    - **Architecture**: EfficientNetB0
+    - **Training Accuracy**: 83%
+    - **Validation AUC**: 0.91
+    - **Dataset**: Custom Celeb-DF subset
+    """)
 
 
     st.markdown(f"### 🧠 Prediction: `{label}`")
