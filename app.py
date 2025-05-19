@@ -20,7 +20,7 @@ st.markdown("""
         padding-bottom: 2rem;
     }
     .stFileUploader, .stButton>button {
-        background-color: #f5f5f5;
+ 
         color: black;
     }
     .title-style {
