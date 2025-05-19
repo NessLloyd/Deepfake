@@ -5,6 +5,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import os
     
+# Set page config FIRST
+st.set_page_config(page_title="Deepfake Detection", layout="centered")
 
 # Load model
 @st.cache_resource
