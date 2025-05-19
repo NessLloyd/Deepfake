@@ -11,27 +11,39 @@ def load_best_model():
 
 model = load_best_model()
 
-# Title and instructions
-st.set_page_config(page_title="Fake or Face", layout="centered")
-st.title("🔍 Fake or Face")
-st.subheader("Upload a face image to detect if it's a deepfake.")
+# Layout: Title
+st.set_page_config(page_title="Deepfake Detection", layout="centered")
+st.title("AI or Real - Deepfake Detection")
+st.markdown("Upload a **face image**, and we’ll tell you if it's a deepfake or not.")
 
-uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+# Layout: Upload + Prediction
+uploaded_file = st.file_uploader("📤 Upload an image", type=["jpg", "jpeg", "png"])
 if uploaded_file:
+    col1, col2 = st.columns(2)
+    
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_container_width=True)
-
-
-    # Preprocess
+    col1.image(image, caption="Uploaded Image", use_container_width=True)
+    
     resized = image.resize((224, 224))
-    array = np.array(resized)
-    array = preprocess_input(array)
-    array = np.expand_dims(array, axis=0)
+    array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
-    # Predict
     pred = model.predict(array)[0][0]
     label = "Real" if pred > 0.5 else "Fake"
     confidence = pred if pred > 0.5 else 1 - pred
+
+    col2.markdown(f"###  **Prediction:** `{label}`")
+    col2.markdown(f"**Confidence:** `{confidence:.2%}`")
+
+# Layout: Model Info
+st.markdown("---")
+st.markdown("#### 🧬 Model Information")
+st.markdown("""
+- **Architecture**: EfficientNetB0
+- **Training Accuracy**: 83%
+- **Validation AUC**: 0.91
+- **Dataset**: Custom Celeb-DF subset
+""")
+
 
     st.markdown(f"### 🧠 Prediction: `{label}`")
     st.markdown(f"**Confidence:** `{confidence:.2%}`")
