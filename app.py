@@ -4,7 +4,6 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import os
-import streamlit.components.v1 as components
 
 # Set page config
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
@@ -43,85 +42,97 @@ st.markdown("---")
 st.markdown("<h2 style='text-align:center;'>Prediction Results</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#b06666;'>Sample prediction results produced by our deepfake detection model</p>", unsafe_allow_html=True)
 
-# Define image URLs
-gallery_urls = [
-    f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/gallery/gallery-{i}.png" for i in range(1, 13)
-]
+# Load gallery images
+gallery_folder = "gallery"
+gallery_images = sorted([
+    f for f in os.listdir(gallery_folder)
+    if f.endswith((".png", ".jpg", ".jpeg"))
+])
 
-# HTML with animation and center-scale effect
-gallery_html = f"""
+# Create HTML for carousel
+slides_html = ""
+for i, image_file in enumerate(gallery_images):
+    image_url = f"https://raw.githubusercontent.com/NessLloyd/Deepfake/main/{gallery_folder}/{image_file}"
+    slides_html += f"""
+    <div class='carousel-item'>
+        <img src='{image_url}' />
+    </div>
+    """
+
+dots_html = "".join([f"<span class='dot' onclick='goToSlide({i})'></span>" for i in range(len(gallery_images))])
+
+carousel_code = f"""
 <style>
-.carousel-wrapper {{
-  width: 100%;
-  overflow: hidden;
-  background: #fafafa;
-  padding: 20px 0;
-  position: relative;
-}}
-
 .carousel-container {{
-  display: flex;
-  animation: scroll 60s linear infinite;
-  gap: 30px;
-  padding-left: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #f5f5f5;
+    padding: 20px 0;
+    position: relative;
 }}
-
-.carousel-container:hover {{
-  animation-play-state: paused;
+.carousel-track {{
+    display: flex;
+    gap: 20px;
+    width: calc(300px * {len(gallery_images) * 2});
+    animation: scroll 60s linear infinite;
 }}
-
-.carousel-container img {{
-  height: 250px;
-  border-radius: 12px;
-  transition: transform 0.3s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.carousel-item {{
+    flex: 0 0 auto;
+    width: 250px;
+    transition: transform 0.3s ease-in-out;
 }}
-
-.carousel-container div {{
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.carousel-item img {{
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }}
-
-.carousel-container div:nth-child(6) img {{
-  transform: scale(1.1);
-  border: 3px solid #b06666;
-}}
-
 @keyframes scroll {{
-  0% {{ transform: translateX(0); }}
-  100% {{ transform: translateX(-100%); }}
+    0% {{ transform: translateX(0); }}
+    100% {{ transform: translateX(-50%); }}
 }}
-
-.dots {{
-  text-align: center;
-  margin-top: 10px;
+.carousel-dots {{
+    text-align: center;
+    margin-top: 10px;
 }}
-.dots span {{
-  display: inline-block;
-  height: 12px;
-  width: 12px;
-  background: #ccc;
-  border-radius: 50%;
-  margin: 0 5px;
-  animation: blink 60s linear infinite;
+.dot {{
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    margin: 0 4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
 }}
-.dots span:nth-child(6) {{ background: #b06666; }}
-@keyframes blink {{
-  0%, 100% {{ opacity: 1; }}
-  50% {{ opacity: 0.5; }}
+.dot.active {{
+    background-color: #717171;
 }}
 </style>
-<div class="carousel-wrapper">
-  <div class="carousel-container">
-    {''.join([f'<div><img src="{url}" /></div>' for url in gallery_urls * 2])}
-  </div>
-  <div class="dots">{''.join(['<span></span>' for _ in gallery_urls])}</div>
+<div class='carousel-container'>
+    <div class='carousel-track'>
+        {slides_html}
+        {slides_html}
+    </div>
+    <div class='carousel-dots'>
+        {dots_html}
+    </div>
 </div>
+<script>
+let dots = document.querySelectorAll('.dot');
+dots.forEach((dot, i) => {{
+    dot.addEventListener('click', () => goToSlide(i));
+}});
+function goToSlide(index) {{
+    const track = document.querySelector('.carousel-track');
+    track.style.animation = 'none';
+    track.style.transform = `translateX(${{-index * 270}}px)`;
+}}
+</script>
 """
 
-components.html(gallery_html, height=350, scrolling=False)
+st.components.v1.html(carousel_code, height=340, scrolling=False)
 
 # Model info
 st.markdown("---")
