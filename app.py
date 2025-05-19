@@ -8,7 +8,7 @@ import os
 # Set page config
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
 
-# Inject light theme and CSS for full white background and improved layout
+# Inject light theme and CSS for full white background, improved layout, animations, and title colors
 st.markdown("""
     <style>
     html, body, .stApp {
@@ -27,14 +27,32 @@ st.markdown("""
         font-size: 2.5em;
         font-weight: bold;
         text-align: center;
-        color: #222;
+        color: #1a73e8;
         margin-bottom: 0.2em;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards;
     }
     .subheader-style {
         text-align: center;
         font-size: 1.1em;
-        color: #555;
+        color: #5f6368;
         margin-bottom: 2em;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease 0.2s forwards;
+    }
+    .fade-section {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards;
+        animation-delay: 0.4s;
+    }
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -51,22 +69,30 @@ st.markdown("<div class='title-style'>AI or Real - Deepfake Detection</div>", un
 st.markdown("<div class='subheader-style'>Upload a face image, and we’ll tell you if it's a deepfake or not.</div>", unsafe_allow_html=True)
 
 # File upload
-uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
+with st.container():
+    st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
+    st.markdown("</div>", unsafe_allow_html=True)
+
 if uploaded_file:
-    col1, col2 = st.columns(2)
+    with st.container():
+        st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
 
-    image = Image.open(uploaded_file).convert("RGB")
-    col1.image(image, caption="Uploaded Image", use_container_width=True)
+        image = Image.open(uploaded_file).convert("RGB")
+        col1.image(image, caption="Uploaded Image", use_container_width=True)
 
-    resized = image.resize((224, 224))
-    array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
+        resized = image.resize((224, 224))
+        array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
-    pred = model.predict(array)[0][0]
-    label = "Real" if pred > 0.5 else "Fake"
-    confidence = pred if pred > 0.5 else 1 - pred
+        pred = model.predict(array)[0][0]
+        label = "Real" if pred > 0.5 else "Fake"
+        confidence = pred if pred > 0.5 else 1 - pred
 
-    col2.markdown(f"###  **Prediction:** `{label}`")
-    col2.markdown(f"**Confidence:** `{confidence:.2%}`")
+        col2.markdown(f"###  **Prediction:** `{label}`")
+        col2.markdown(f"**Confidence:** `{confidence:.2%}`")
+        st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 # Gallery Section Title
