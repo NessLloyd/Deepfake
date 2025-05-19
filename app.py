@@ -120,12 +120,42 @@ carousel_code = f"""
 
 st.components.v1.html(carousel_code, height=460, scrolling=False)
 
-# Model info
+# Experimental Results Section
 st.markdown("---")
-st.markdown("#### 🧬 Model Information")
+st.markdown("<h2 style='text-align:center;'>🔬 Experimental Results</h2>", unsafe_allow_html=True)
 st.markdown("""
-- **Architecture**: EfficientNetB0
-- **Training Accuracy**: 83%
-- **Validation AUC**: 0.91
-- **Dataset**: Custom Celeb-DF subset
+<p style='text-align:center; max-width:900px; margin:auto;'>
+We have performed extensive training and hyperparameter tuning, such as comparing different EfficientNet models, number of convolution layers, weights, data augmentations, dropout rates, and regularizers. In the end, the following settings gave us the best results:
+</p>
+""", unsafe_allow_html=True)
+
+# Hyperparameter Summary
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown("""
+    - ✅ Input Size: **224 × 224**
+    - ✅ Batch Size: **32**
+    - ✅ Optimizer: **Adam**
+    """)
+
+with col2:
+    st.markdown("""
+    - ✅ Learning Rate: **0.001**
+    - ✅ Dropout Rates: **0.4** and **0.3**
+    """)
+
+# Accuracy and Loss Charts
+col1, col2 = st.columns(2)
+with col1:
+    st.image("accuracy_curve.png", caption="Accuracy Curve", use_column_width=True)
+with col2:
+    st.image("loss_curve.png", caption="Loss Curve", use_column_width=True)
+
+# Final Metrics
+st.markdown("### 📊 Final Performance Metrics")
+st.markdown("""
+- ✅ Final Validation Accuracy: **83.04%**
+- ✅ ROC AUC Score: **0.91**
+- ✅ Average Precision: **0.91**
 """)
+
