@@ -51,10 +51,10 @@ if uploaded_file:
     slideshow = st.empty()  # Placeholder for image
     
     for img_file in image_files:
-    img_path = os.path.join(image_folder, img_file)
-    image = Image.open(img_path)
-    slideshow.image(image, caption=f"Image: {img_file}", use_container_width=True)
-    time.sleep(2)
+        img_path = os.path.join(image_folder, img_file)
+        image = Image.open(img_path)
+        slideshow.image(image, caption=f"Image: {img_file}", use_container_width=True)
+        time.sleep(2)
 
 
     # Layout: Model Info
