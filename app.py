@@ -124,6 +124,60 @@ img {
     text-decoration: none;
 }
 
+.stats-section {
+    background-color: #f0f2f5;
+    padding: 60px 30px;
+    border-radius: 12px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.stats-section h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stats-section .subtext {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.stat-box {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 30px 20px;
+    width: 200px;
+    transition: transform 0.3s ease;
+}
+.stat-box:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #555;
+}
+
+
 </style>
 <script>
 const observer = new IntersectionObserver((entries) => {
@@ -279,55 +333,47 @@ st.components.v1.html(carousel_code, height=460, scrolling=False)
 
  # Experimental Results Section
 st.markdown("---")
-st.markdown("<div class='results-section'>", unsafe_allow_html=True)
-st.markdown("<h2>Experimental Results</h2>", unsafe_allow_html=True)
 st.markdown("""
-<p>
-We performed extensive training and tuning using different EfficientNet architectures, augmentations, optimizers, and dropout layers to find the best configuration.
-</p>
+<div class="stats-section">
+    <h2>Experimental Results</h2>
+    <p class="subtext">Final model configuration from testing various EfficientNet settings.</p>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-number">224×224</div>
+            <div class="stat-label">Input Size</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">32</div>
+            <div class="stat-label">Batch Size</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">0.001</div>
+            <div class="stat-label">Learning Rate</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">Adam</div>
+            <div class="stat-label">Optimizer</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">0.4 & 0.3</div>
+            <div class="stat-label">Dropout</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">83.04%</div>
+            <div class="stat-label">Val Accuracy</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">0.91</div>
+            <div class="stat-label">ROC AUC</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">0.91</div>
+            <div class="stat-label">Avg Precision</div>
+        </div>
+    </div>
+</div>
 """, unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.markdown("""
-    <div class='metric-box'>
-        <h3>Input Size</h3><p>224 × 224</p>
-    </div>
-    <div class='metric-box'>
-        <h3>Batch Size</h3><p>32</p>
-    </div>
-    <div class='metric-box'>
-        <h3>Optimizer</h3><p>Adam</p>
-    </div>
-    """, unsafe_allow_html=True)
-with col2:
-    st.markdown("""
-    <div class='metric-box'>
-        <h3>Dropout</h3><p>0.4 & 0.3</p>
-    </div>
-    <div class='metric-box'>
-        <h3>Learning Rate</h3><p>0.001</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-# Charts
-col1, col2 = st.columns(2)
-with col1:
-    st.image("accuracy_curve.png", caption="Accuracy Curve", use_container_width=True)
-with col2:
-    st.image("loss_curve.png", caption="Loss Curve", use_container_width=True)
-
-# Final Metrics
-st.markdown("<h3 style='text-align:center; margin-top:30px;'>Final Metrics</h3>", unsafe_allow_html=True)
-m1, m2, m3 = st.columns(3)
-with m1:
-    st.markdown("<div class='metric-box'><h3>Validation Accuracy</h3><p>83.04%</p></div>", unsafe_allow_html=True)
-with m2:
-    st.markdown("<div class='metric-box'><h3>ROC AUC Score</h3><p>0.91</p></div>", unsafe_allow_html=True)
-with m3:
-    st.markdown("<div class='metric-box'><h3>Average Precision</h3><p>0.91</p></div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
