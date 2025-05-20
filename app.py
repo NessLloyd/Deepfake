@@ -410,7 +410,7 @@ st.markdown("""
 <div class="footer">
     <p>Completed on: <strong>May 19, 2025</strong></p>
     <p>Created by: Vanessa Lloyd, Vireak Sroeung, George Battikha, Zachary Heffernan, Luke Andriopolous</p>
-    <p><a href="https://ids-ips-blockchain.streamlit.app/" target="_blank">Live Demo</a> |
+    <p>
        <a href="https://github.com/NessLloyd/Deepfake" target="_blank">GitHub Repo</a></p>
 </div>
 """, unsafe_allow_html=True)
