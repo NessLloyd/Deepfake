@@ -5,100 +5,162 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.efficientnet import preprocess_input
 import os
 
-# Page config
+# Set page configuration
 st.set_page_config(page_title="Deepfake Detection", layout="wide")
 
-# Custom CSS + Google Fonts
+# Inject custom CSS
 st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-    html, body, .stApp {
-        background-color: white;
-        color: black;
-        font-family: 'Inter', sans-serif;
-    }
-    .block-container {
-        padding-top: 6rem;
-    }
-    .navbar {
-        background-color: white;
-        padding: 10px 20px;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 999;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        font-weight: 600;
-    }
-    .hero {
-        background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://images.unsplash.com/photo-1581093588401-22b83fd69d80?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
-        padding: 80px 20px 40px 20px;
-        text-align: center;
-        border-radius: 12px;
-    }
-    .hero h1 {
-        font-size: 3em;
-        font-weight: 700;
-        color: #222;
-    }
-    .hero p {
-        font-size: 1.2em;
-        color: #444;
-    }
-    .stFileUploader {
-        border: 2px dashed #ccc;
-        padding: 20px;
-        border-radius: 10px;
-        background-color: #fafafa;
-        transition: all 0.3s ease;
-    }
-    .stFileUploader:hover {
-        background-color: #f0f0f0;
-    }
-    .stButton > button {
-        background-color: #3f51b5;
-        color: white;
-        border-radius: 8px;
-        padding: 8px 16px;
-        transition: all 0.3s ease;
-    }
-    .stButton > button:hover {
-        background-color: #2c387e;
-        transform: scale(1.03);
-    }
-    .fade-section {
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html, body, .stApp {
+    background-color: white;
+    color: black;
+    font-family: 'Inter', sans-serif;
+}
+.block-container {
+    padding-top: 6rem;
+}
+.navbar {
+    background-color: white;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-weight: 600;
+}
+.hero {
+    background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://images.unsplash.com/photo-1581093588401-22b83fd69d80?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+    padding: 80px 20px 40px 20px;
+    text-align: center;
+    border-radius: 12px;
+}
+.hero h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: #222;
+}
+.hero p {
+    font-size: 1.2em;
+    color: #444;
+}
+.stFileUploader {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+.stFileUploader:hover {
+    background-color: #f0f0f0;
+}
+.stButton > button {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+.stButton > button:hover {
+    background-color: #2c387e;
+    transform: scale(1.03);
+}
+.fade-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+}
+.fade-in-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+.results-section {
+    background: linear-gradient(to right, #f9f9f9, #ffffff);
+    padding: 50px 30px;
+    border-radius: 16px;
+    margin: 60px 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    animation: fadeInUp 1s ease-in-out;
+}
+.results-section h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #222;
+}
+.results-section p {
+    text-align: center;
+    font-size: 1.1em;
+    color: #666;
+    max-width: 900px;
+    margin: auto;
+}
+.metric-box {
+    background-color: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+    text-align: center;
+}
+.metric-box h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+.metric-box p {
+    margin: 5px 0 0;
+    font-size: 1.1em;
+    color: #555;
+}
+@keyframes fadeInUp {
+    from {
         opacity: 0;
         transform: translateY(20px);
-        transition: all 1s ease;
     }
-    .fade-in-visible {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    </style>
-    <script>
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) {
-                entry.target.classList.add("fade-in-visible");
-            }
-        });
+}
+.footer {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+    padding: 30px 0 10px 0;
+    margin-top: 50px;
+}
+.footer a {
+    color: #3f51b5;
+    text-decoration: none;
+}
+</style>
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add("fade-in-visible");
+        }
     });
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
-    });
-    </script>
+});
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+});
+</script>
 """, unsafe_allow_html=True)
 
 # Navbar
-st.markdown("<div class='navbar'>🔍 Deepfake Detector</div>", unsafe_allow_html=True)
+st.markdown("<div class='navbar'>Deepfake Detector</div>", unsafe_allow_html=True)
 
-# Hero section
+# Hero Section
 st.markdown("""
-    <div class='hero'>
-        <h1>🧠 AI or Real?</h1>
-        <p>Upload a face image and let our AI detect whether it's fake or real.</p>
-    </div>
+<div class='hero'>
+    <h1>AI or Real?</h1>
+    <p>Upload a face image and let our AI detect whether it's fake or real.</p>
+</div>
 """, unsafe_allow_html=True)
 
 # Load model
@@ -108,12 +170,14 @@ def load_best_model():
 
 model = load_best_model()
 
-# File upload section
+# Upload section
 st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
-uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Prediction
+
+    
+# Prediction section
 if uploaded_file:
     st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
@@ -124,7 +188,7 @@ if uploaded_file:
     resized = image.resize((224, 224))
     array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
-    with st.spinner("🔍 Analyzing the image..."):
+    with st.spinner("Analyzing the image..."):
         pred = model.predict(array)[0][0]
         label = "Real" if pred > 0.5 else "Fake"
         confidence = pred if pred > 0.5 else 1 - pred
@@ -211,64 +275,63 @@ carousel_code = f"""
 """
 st.components.v1.html(carousel_code, height=460, scrolling=False)
 
-# Results section
-st.markdown("---")
-st.markdown("<h2 style='text-align:center;'>🔬 Experimental Results</h2>", unsafe_allow_html=True)
+ # Experimental Results Section
+st.markdown("<div class='results-section'>", unsafe_allow_html=True)
+st.markdown("<h2>Experimental Results</h2>", unsafe_allow_html=True)
 st.markdown("""
-<p style='text-align:center; max-width:900px; margin:auto;'>
-We have performed extensive training and tuning by comparing different EfficientNet models, layers, weights, augmentations, and optimizers. Below are the best settings:
+<p>
+We performed extensive training and tuning using different EfficientNet architectures, augmentations, optimizers, and dropout layers to find the best configuration.
 </p>
 """, unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("""
-    - 🧩 **Input Size**: 224 × 224  
-    - 📦 **Batch Size**: 32  
-    - ⚙️ **Optimizer**: Adam  
-    """)
-
+    <div class='metric-box'>
+        <h3>Input Size</h3><p>224 × 224</p>
+    </div>
+    <div class='metric-box'>
+        <h3>Batch Size</h3><p>32</p>
+    </div>
+    <div class='metric-box'>
+        <h3>Optimizer</h3><p>Adam</p>
+    </div>
+    """, unsafe_allow_html=True)
 with col2:
     st.markdown("""
-    - 💧 **Dropout**: 0.4 & 0.3  
-    - 📈 **Learning Rate**: 0.001  
-    """)
+    <div class='metric-box'>
+        <h3>Dropout</h3><p>0.4 & 0.3</p>
+    </div>
+    <div class='metric-box'>
+        <h3>Learning Rate</h3><p>0.001</p>
+    </div>
+    """, unsafe_allow_html=True)
 
+# Charts
 col1, col2 = st.columns(2)
 with col1:
-    st.image("accuracy_curve.png", caption="📊 Accuracy Curve", use_container_width=True)
+    st.image("accuracy_curve.png", caption="Accuracy Curve", use_container_width=True)
 with col2:
-    st.image("loss_curve.png", caption="📉 Loss Curve", use_container_width=True)
+    st.image("loss_curve.png", caption="Loss Curve", use_container_width=True)
 
-st.markdown("### ✅ Final Metrics")
-st.markdown("""
-- 🟢 **Validation Accuracy**: 83.04%  
-- 🔵 **ROC AUC Score**: 0.91  
-- 🟡 **Average Precision**: 0.91  
-""")
+# Final Metrics
+st.markdown("<h3 style='text-align:center; margin-top:30px;'>Final Metrics</h3>", unsafe_allow_html=True)
+m1, m2, m3 = st.columns(3)
+with m1:
+    st.markdown("<div class='metric-box'><h3>Validation Accuracy</h3><p>83.04%</p></div>", unsafe_allow_html=True)
+with m2:
+    st.markdown("<div class='metric-box'><h3>ROC AUC Score</h3><p>0.91</p></div>", unsafe_allow_html=True)
+with m3:
+    st.markdown("<div class='metric-box'><h3>Average Precision</h3><p>0.91</p></div>", unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
-st.markdown("---", unsafe_allow_html=True)
 st.markdown("""
-<style>
-.footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    color: gray;
-    font-size: 14px;
-    padding: 20px 0 10px 0;
-    margin-top: 50px;
-}
-.footer a {
-    color: #3f51b5;
-    text-decoration: none;
-}
-</style>
 <div class="footer">
-    <p>📅 Completed on: <strong>May 19, 2025</strong></p>
-    <p>👥 Created by: Vanessa Lloyd, Vireak Sroeung, George Battikha, Zachary Heffernan, Luke Andriopolous</p>
-    <p>🔗 <a href="https://ids-ips-blockchain.streamlit.app/" target="_blank">Live Demo</a> | <a href="https://github.com/NessLloyd/Deepfake" target="_blank">GitHub Repo</a></p>
+    <p>Completed on: <strong>May 19, 2025</strong></p>
+    <p>Created by: Vanessa Lloyd, Vireak Sroeung, George Battikha, Zachary Heffernan, Luke Andriopolous</p>
+    <p><a href="https://ids-ips-blockchain.streamlit.app/" target="_blank">Live Demo</a> |
+       <a href="https://github.com/NessLloyd/Deepfake" target="_blank">GitHub Repo</a></p>
 </div>
 """, unsafe_allow_html=True)
