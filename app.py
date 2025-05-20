@@ -167,9 +167,11 @@ if uploaded_file:
 
     # Prediction
     with st.spinner("Analyzing the image..."):
-        pred = model.predict(array)[0][0]
-        label = "Real" if pred > 0.5 else "Fake"
-        confidence = pred if pred > 0.5 else 1 - pred
+    pred = model.predict(array)[0][0]
+    is_fake = pred < 0.5  # Define is_fake properly
+    label = "Fake" if is_fake else "Real"
+    confidence = (1 - pred) if is_fake else pred
+    confidence_pct = round(confidence * 100, 2)
 
 
     icon = "❌" if is_fake else "✅"
