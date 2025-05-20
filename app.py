@@ -12,122 +12,91 @@ st.set_page_config(page_title="Deepfake Detection", layout="wide")
 
 # Inject custom CSS
 st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* Global */
 html, body, .stApp {
-    background-color: white;
-    color: black;
-    font-family: 'Inter', sans-serif;
+    background-color: #f5f7fa;
+    color: #111;
+    font-family: 'Segoe UI', sans-serif;
 }
+
 .block-container {
-    padding-top: 6rem;
-}
-.navbar {
-    background-color: white;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    font-weight: 600;
-}
-.hero {
-    background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), url('https://images.unsplash.com/photo-1581093588401-22b83fd69d80?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
-    padding: 80px 20px 40px 20px;
-    text-align: center;
-    border-radius: 12px;
-}
-.hero h1 {
-    font-size: 3em;
-    font-weight: 700;
-    color: #222;
-}
-.hero p {
-    font-size: 1.2em;
-    color: #444;
-}
-.stFileUploader {
-    border: 2px dashed #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #fafafa;
-    transition: all 0.3s ease;
-}
-.stFileUploader:hover {
-    background-color: #f0f0f0;
-}
-.stButton > button {
-    background-color: #3f51b5;
-    color: white;
-    border-radius: 8px;
-    padding: 8px 16px;
-    transition: all 0.3s ease;
-}
-.stButton > button:hover {
-    background-color: #2c387e;
-    transform: scale(1.03);
-}
-.fade-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 1s ease;
-}
-.fade-in-visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-}
-.results-section {
-    background: linear-gradient(to right, #f9f9f9, #ffffff);
-    padding: 50px 30px;
-    border-radius: 16px;
-    margin: 60px 0;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-    animation: fadeInUp 1s ease-in-out;
-}
-.results-section h2 {
-    font-size: 2.5em;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 10px;
-    color: #222;
-}
-.results-section p {
-    text-align: center;
-    font-size: 1.1em;
-    color: #666;
-    max-width: 900px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
     margin: auto;
 }
-.metric-box {
-    background-color: #ffffff;
-    border: 1px solid #eaeaea;
+
+/* Title */
+.title-style {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
+    color: #222;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Upload Section */
+.stFileUploader {
+    border: 2px dashed #999 !important;
+    background-color: #fff;
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    margin-bottom: 16px;
+    padding: 1rem;
     text-align: center;
 }
-.metric-box h3 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #333;
+
+/* Prediction Box */
+.prediction-box {
+    background-color: #ffe5e5;
+    border-left: 8px solid #cc0000;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 600px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
 }
-.metric-box p {
-    margin: 5px 0 0;
-    font-size: 1.1em;
-    color: #555;
+
+/* Prediction Title */
+.prediction-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #cc0000;
 }
+
+/* Confidence Text */
+.confidence-text {
+    font-size: 1rem;
+    color: #444;
+    margin-top: 0.4rem;
+}
+
+/* Image */
+img {
+    border-radius: 10px;
+    max-width: 200px;
+    margin-top: 1rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
+</style>
+""", unsafe_allow_html=True)
+
 .footer {
     text-align: center;
     color: gray;
@@ -139,13 +108,7 @@ html, body, .stApp {
     color: #3f51b5;
     text-decoration: none;
 }
-.result-card {
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    min-height: 100%;
-}
+
 </style>
 <script>
 const observer = new IntersectionObserver((entries) => {
@@ -210,23 +173,27 @@ if uploaded_file:
         label = "Real" if pred > 0.5 else "Fake"
         confidence = pred if pred > 0.5 else 1 - pred
 
-    # Styling based on prediction
-    if label == "Real":
-        card_color = "#e6f4ea"
-        text_color = "#137333"
-        icon = "✔️"
-    else:
-        card_color = "#fce8e6"
-        text_color = "#d93025"
-        icon = "✖️"
 
-    with col2:
-        col2.markdown(f"""
-            <div class='result-card' style="background-color: {card_color}; color: {text_color};">
-                <h2 style="margin-bottom: 10px;">{icon} Prediction: <span style="font-weight:600;">{label}</span></h2>
-                <p style="font-size: 1.2em;">Confidence: <strong>{confidence:.2%}</strong></p>
-            </div>
-        """, unsafe_allow_html=True)
+    icon = "❌" if is_fake else "✅"
+label = "Fake" if is_fake else "Real"
+confidence = round(pred * 100, 2)
+
+st.markdown(f"""
+<div class="prediction-box">
+    <div class="prediction-title">
+        <span>{icon} Prediction: {label}</span>
+    </div>
+    <div class="confidence-text">Confidence: <strong>{confidence}%</strong></div>
+</div>
+""", unsafe_allow_html=True)
+st.markdown(f"""
+<div class="prediction-box">
+    <div class="prediction-title">
+        <span>❌ Prediction: Fake</span>
+    </div>
+    <div class="confidence-text">Confidence: <strong>96.87%</strong></div>
+</div>
+""", unsafe_allow_html=True)
 
 
 # Gallery section
