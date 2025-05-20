@@ -201,10 +201,14 @@ img {
 }
 
 </style>
+""", unsafe_allow_html=True)
+import streamlit.components.v1 as components
+
+components.html("""
 <script>
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if(entry.isIntersecting) {
+        if (entry.isIntersecting) {
             entry.target.classList.add("fade-in-visible");
         }
     });
@@ -213,8 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
 });
 </script>
-""", unsafe_allow_html=True)
-
+""", height=0)
 
 # Hero Section
 st.markdown("""
