@@ -19,12 +19,13 @@ html, body, .stApp {
     color: #111;
     font-family: 'Segoe UI', sans-serif;
 }
-
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
-    max-width: 1200px;
-    margin: auto;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 /* Title */
@@ -94,6 +95,22 @@ img {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
+.hero {
+    text-align: center;
+    margin: 30px 0 40px 0;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #555;
+}
 
 .footer {
     text-align: center;
@@ -122,8 +139,6 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 """, unsafe_allow_html=True)
 
-# Navbar
-st.markdown("<div class='navbar'>Deepfake Detector</div>", unsafe_allow_html=True)
 
 # Hero Section
 st.markdown("""
