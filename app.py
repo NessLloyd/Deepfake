@@ -178,6 +178,27 @@ img {
 }
 
 
+.prediction-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.pred-image img {
+    border-radius: 12px;
+    max-width: 260px;
+    max-height: 360px;
+    object-fit: contain;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+.pred-box {
+    flex: 1;
+    min-width: 280px;
+}
 
 </style>
 <script>
@@ -215,44 +236,41 @@ model = load_best_model()
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    col1, col2 = st.columns([1, 1])
-
     # Load image
     image = Image.open(uploaded_file).convert("RGB")
     resized = image.resize((224, 224))
     array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
-    # Display image
-    with col1:
-        buffer = io.BytesIO()
-        image.save(buffer, format="PNG")
-        img_str = base64.b64encode(buffer.getvalue()).decode()
-        col1.markdown(f"""
-            <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-                <img src="data:image/png;base64,{img_str}" 
-                     style="max-width: 100%; max-height: 400px; border-radius: 12px; object-fit: contain;" />
-            </div>
-        """, unsafe_allow_html=True)
-
-    # Make prediction
+    # Predict
     with st.spinner("Analyzing the image..."):
         pred = model.predict(array)[0][0]
         is_fake = pred < 0.5
         label = "Fake" if is_fake else "Real"
         confidence = (1 - pred) if is_fake else pred
         confidence_pct = round(confidence * 100, 2)
-
-    # Output results
-    with col2:
         icon = "❌" if is_fake else "✅"
-        st.markdown(f"""
-        <div class="prediction-box">
-            <div class="prediction-title">
-                <span>{icon} Prediction: {label}</span>
-            </div>
-            <div class="confidence-text">Confidence: <strong>{confidence_pct}%</strong></div>
+
+    # Display image + prediction in custom flex layout
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+    img_str = base64.b64encode(buffer.getvalue()).decode()
+
+    st.markdown(f"""
+    <div class="prediction-container">
+        <div class="pred-image">
+            <img src="data:image/png;base64,{img_str}" />
         </div>
-        """, unsafe_allow_html=True)
+        <div class="pred-box">
+            <div class="prediction-box">
+                <div class="prediction-title">
+                    <span>{icon} Prediction: {label}</span>
+                </div>
+                <div class="confidence-text">Confidence: <strong>{confidence_pct}%</strong></div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 
 # Gallery section
