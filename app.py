@@ -137,6 +137,13 @@ html, body, .stApp {
     color: #3f51b5;
     text-decoration: none;
 }
+.result-card {
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    min-height: 100%;
+}
 </style>
 <script>
 const observer = new IntersectionObserver((entries) => {
@@ -170,33 +177,55 @@ def load_best_model():
 
 model = load_best_model()
 
-# Upload section
-st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
+
+# Upload
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-st.markdown("</div>", unsafe_allow_html=True)
 
-
-    
-# Prediction section
+# Prediction
 if uploaded_file:
-    st.markdown("<div class='fade-section'>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1])
 
+    # Load image
     image = Image.open(uploaded_file).convert("RGB")
-    col1.image(image, caption="Uploaded Image", use_container_width=True)
-
     resized = image.resize((224, 224))
     array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
+    # Display image with size limit
+    with col1:
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        img_str = base64.b64encode(buffer.getvalue()).decode()
+        col1.markdown(f"""
+            <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+                <img src="data:image/png;base64,{img_str}" 
+                     style="max-width: 100%; max-height: 400px; border-radius: 12px; object-fit: contain;" />
+            </div>
+        """, unsafe_allow_html=True)
+
+    # Prediction
     with st.spinner("Analyzing the image..."):
         pred = model.predict(array)[0][0]
         label = "Real" if pred > 0.5 else "Fake"
         confidence = pred if pred > 0.5 else 1 - pred
 
-    color = "#34a853" if label == "Real" else "#ea4335"
-    col2.markdown(f"<div style='background-color:{color}; color:white; padding:20px; border-radius:10px; text-align:center;'>"
-                  f"<h3>Prediction: {label}</h3><p>Confidence: {confidence:.2%}</p></div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    # Styling based on prediction
+    if label == "Real":
+        card_color = "#e6f4ea"
+        text_color = "#137333"
+        icon = "✔️"
+    else:
+        card_color = "#fce8e6"
+        text_color = "#d93025"
+        icon = "✖️"
+
+    with col2:
+        col2.markdown(f"""
+            <div class='result-card' style="background-color: {card_color}; color: {text_color};">
+                <h2 style="margin-bottom: 10px;">{icon} Prediction: <span style="font-weight:600;">{label}</span></h2>
+                <p style="font-size: 1.2em;">Confidence: <strong>{confidence:.2%}</strong></p>
+            </div>
+        """, unsafe_allow_html=True)
+
 
 # Gallery section
 st.markdown("---")
