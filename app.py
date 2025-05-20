@@ -144,7 +144,6 @@ model = load_best_model()
 # Upload
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-# Prediction
 if uploaded_file:
     col1, col2 = st.columns([1, 1])
 
@@ -153,7 +152,7 @@ if uploaded_file:
     resized = image.resize((224, 224))
     array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
-    # Display image with size limit
+    # Display image
     with col1:
         buffer = io.BytesIO()
         image.save(buffer, format="PNG")
@@ -165,35 +164,25 @@ if uploaded_file:
             </div>
         """, unsafe_allow_html=True)
 
-    # Prediction
+    # Make prediction
     with st.spinner("Analyzing the image..."):
-    pred = model.predict(array)[0][0]
-    is_fake = pred < 0.5  # Define is_fake properly
-    label = "Fake" if is_fake else "Real"
-    confidence = (1 - pred) if is_fake else pred
-    confidence_pct = round(confidence * 100, 2)
+        pred = model.predict(array)[0][0]
+        is_fake = pred < 0.5
+        label = "Fake" if is_fake else "Real"
+        confidence = (1 - pred) if is_fake else pred
+        confidence_pct = round(confidence * 100, 2)
 
-
-    icon = "❌" if is_fake else "✅"
-label = "Fake" if is_fake else "Real"
-confidence = round(pred * 100, 2)
-
-st.markdown(f"""
-<div class="prediction-box">
-    <div class="prediction-title">
-        <span>{icon} Prediction: {label}</span>
-    </div>
-    <div class="confidence-text">Confidence: <strong>{confidence}%</strong></div>
-</div>
-""", unsafe_allow_html=True)
-st.markdown(f"""
-<div class="prediction-box">
-    <div class="prediction-title">
-        <span>❌ Prediction: Fake</span>
-    </div>
-    <div class="confidence-text">Confidence: <strong>96.87%</strong></div>
-</div>
-""", unsafe_allow_html=True)
+    # Output results
+    with col2:
+        icon = "❌" if is_fake else "✅"
+        st.markdown(f"""
+        <div class="prediction-box">
+            <div class="prediction-title">
+                <span>{icon} Prediction: {label}</span>
+            </div>
+            <div class="confidence-text">Confidence: <strong>{confidence_pct}%</strong></div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 # Gallery section
