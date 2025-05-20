@@ -94,15 +94,4 @@ Here are the performance graphs for accuracy and loss during training:
 - Luke Andriopoulos
 
 ---
-
-## License
-
-MIT License. Feel free to fork, reuse, or improve this project — just give us a shout!
-
----
-
-## Acknowledgements
-
-Thanks to the creators of:
-- [DFDC dataset (Facebook AI)](https://ai.facebook.com/datasets/dfdc)
-- [EfficientNet (Google Brain)](https://arxiv.org/abs/1905.11946)
+ 
