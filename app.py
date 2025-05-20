@@ -278,6 +278,7 @@ carousel_code = f"""
 st.components.v1.html(carousel_code, height=460, scrolling=False)
 
  # Experimental Results Section
+st.markdown("---")
 st.markdown("<div class='results-section'>", unsafe_allow_html=True)
 st.markdown("<h2>Experimental Results</h2>", unsafe_allow_html=True)
 st.markdown("""
