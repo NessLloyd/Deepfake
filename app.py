@@ -178,6 +178,7 @@ img {
 }
 
 
+
 </style>
 <script>
 const observer = new IntersectionObserver((entries) => {
@@ -374,6 +375,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+
+# Chart Section (keep this below the stats)
+st.markdown("<h3 style='text-align:center; margin-top:40px;'>Training Performance</h3>", unsafe_allow_html=True)
+col1, col2 = st.columns(2)
+with col1:
+    st.image("accuracy_curve.png", caption="Accuracy Curve", use_container_width=True)
+with col2:
+    st.image("loss_curve.png", caption="Loss Curve", use_container_width=True)
 
 # Footer
 st.markdown("""
