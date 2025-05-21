@@ -94,4 +94,10 @@ Here are the performance graphs for accuracy and loss during training:
 - Luke Andriopoulos
 
 ---
+
+        Predicted
+        Fake   Real
+Actual
+Fake    475    85
+Real     98   419
  
