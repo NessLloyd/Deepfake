@@ -253,42 +253,39 @@ if uploaded_file:
         confidence_pct = round(confidence * 100, 2)
         icon = "❌" if is_fake else "✅"
 
-    
     # Display image + prediction in custom flex layout
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
     img_str = base64.b64encode(buffer.getvalue()).decode()
-    
-# Dynamic styles based on prediction
-color = "#cc0000" if is_fake else "#2e7d32"  # red or green text
-bg_color = "#ffe5e5" if is_fake else "#e7f5ec"  # red or green background
-border_color = "#cc0000" if is_fake else "#2e7d32"  # red or green border
 
-st.markdown(f"""
-<style>
-    .dynamic-box {{
-        background-color: {bg_color};
-        border-left: 8px solid {border_color};
-        border-radius: 12px;
-        padding: 1.2rem 1.5rem;
-        margin: 1.5rem auto;
-        max-width: 600px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0;
-    }}
-    .dynamic-title {{
-        font-size: 1.8rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: {color};
-    }}
-</style>
-""", unsafe_allow_html=True)
+    # Dynamic styles based on prediction
+    color = "#cc0000" if is_fake else "#2e7d32"
+    bg_color = "#ffe5e5" if is_fake else "#e7f5ec"
+    border_color = "#cc0000" if is_fake else "#2e7d32"
 
-
+    st.markdown(f"""
+    <style>
+        .dynamic-box {{
+            background-color: {bg_color};
+            border-left: 8px solid {border_color};
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem auto;
+            max-width: 600px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }}
+        .dynamic-title {{
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: {color};
+        }}
+    </style>
+    """, unsafe_allow_html=True)
 
     st.markdown(f"""
     <div class="prediction-container">
@@ -297,15 +294,15 @@ st.markdown(f"""
         </div>
         <div class="pred-box">
             <div class="prediction-box dynamic-box">
-    <div class="prediction-title dynamic-title">
-        <span>{icon} Prediction: {label}</span>
-    </div>
-    <div class="confidence-text">Confidence: <strong>{confidence_pct}%</strong></div>
-</div>
-
+                <div class="prediction-title dynamic-title">
+                    <span>{icon} Prediction: {label}</span>
+                </div>
+                <div class="confidence-text">Confidence: <strong>{confidence_pct}%</strong></div>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
