@@ -245,7 +245,7 @@ if uploaded_file:
     array = np.expand_dims(preprocess_input(np.array(resized)), axis=0)
 
     # Predict
-    with st.spinner("Analyzing the image..."):
+    with st.spinner("Analysing the image..."):
         pred = model.predict(array)[0][0]
         is_fake = pred < 0.5
         label = "Fake" if is_fake else "Real"
