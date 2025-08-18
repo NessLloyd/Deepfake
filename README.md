@@ -3,11 +3,13 @@
 This project uses deep learning to detect deepfake face images. Deepfakes pose a growing threat in digital misinformation, identity theft, and media manipulation. Our tool enables users to upload a face image and receive a prediction on whether the image is real or AI-generated — with confidence metrics and visual results.
 
 ---
-
 ## Demo
 
 **Live App:** [Streamlit Demo](https://fakeface.streamlit.app/)  
-**GitHub Repository:** [NessLloyd/Deepfake](https://github.com/NessLloyd/Deepfake)
+
+> ⚡ **Note:** If the app has been inactive for 3 days, Streamlit automatically puts it to sleep.  
+> Just click **"Get this app back up"** when you visit, and it will wake up in a few seconds. 
+
 
 ---
 
@@ -81,6 +83,7 @@ Here are the performance graphs for accuracy and loss during training:
 ├── accuracy_curve.png      # Training accuracy chart
 ├── loss_curve.png          # Training loss chart
 ├── gallery/                # Sample prediction images
+├── Images/                 # Walkthrough images
 └── README.md
 ```
 
