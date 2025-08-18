@@ -102,18 +102,14 @@ Here are the performance graphs for accuracy and loss during training:
 
 ## Contributors
 
-**Team Members:**
+**Project Lead:**  
 - Vanessa Lloyd  
-- Vireak Sroeung  
-- George Battikha  
-- Zachary Heffernan  
-- Luke Andriopoulos
 
 ---
 
-        Predicted
-        Fake   Real
-Actual
-Fake    475    85
-Real     98   419
- 
+### Confusion Matrix
+
+|               | **Predicted Fake** | **Predicted Real** |
+|---------------|---------------------|--------------------|
+| **Actual Fake** | 475                 | 85                 |
+| **Actual Real** | 98                  | 419                |
