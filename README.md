@@ -1,6 +1,6 @@
 # Deepfake Detection with EfficientNetB3
 
-This project uses deep learning to detect deepfake face images. Deepfakes pose a growing threat in digital misinformation, identity theft, and media manipulation. Our tool enables users to upload a face image and receive a prediction on whether the image is real or AI-generated — with confidence metrics and visual results.
+This project uses deep learning to detect deepfake face images. Deepfakes pose a growing threat in digital misinformation, identity theft, and media manipulation. This tool enables users to upload a face image and receive a prediction on whether the image is real or AI-generated, with confidence metrics and visual results.
 
 ---
 ## Demo
