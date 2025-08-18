@@ -62,24 +62,15 @@ Here are the performance graphs for accuracy and loss during training:
 ## App Walkthrough (Screenshots)
 
 <p align="center">
-  <img src="images/app_screenshot_01.png" width="420"/>
-  <img src="images/app_screenshot_02.png" width="420"/><br/>
-  <img src="images/app_screenshot_03.png" width="420"/>
-  <img src="images/app_screenshot_04.png" width="420"/><br/>
-  <img src="images/app_screenshot_05.png" width="420"/>
-  <img src="images/app_screenshot_06.png" width="420"/><br/>
-  <img src="images/app_screenshot_07.png" width="420"/>
-  <img src="images/app_screenshot_08.png" width="420"/><br/>
-  <img src="images/app_screenshot_09.png" width="420"/>
-  <img src="images/app_screenshot_10.png" width="420"/><br/>
-  <img src="images/app_screenshot_11.png" width="420"/>
-  <img src="images/app_screenshot_12.png" width="420"/><br/>
-  <img src="images/app_screenshot_13.png" width="420"/>
-  <img src="images/app_screenshot_14.png" width="420"/><br/>
-  <img src="images/app_screenshot_15.png" width="420"/>
-  <img src="images/app_screenshot_16.png" width="420"/><br/>
-  <img src="images/app_screenshot_17.png" width="420"/>
+  <img src="images/app_screenshot_14.png" width="700"/><br/>
+  <img src="images/app_screenshot_01.png" width="700"/><br/>
+  <img src="images/app_screenshot_03.png" width="700"/><br/>
+  <img src="images/app_screenshot_04.png" width="700"/><br/>
+  <img src="images/app_screenshot_06.png" width="700"/><br/>
+  <img src="images/app_screenshot_10.png" width="700"/><br/>
+  <img src="images/app_screenshot_13.png" width="700"/>
 </p>
+
 
 ## Folder Structure
 
