@@ -25,7 +25,7 @@ This project uses deep learning to detect deepfake face images. Deepfakes pose a
 
 ## Model Training Overview
 
-We fine-tuned **EfficientNetB3**, a powerful CNN architecture known for its balance of speed and accuracy. Here's how the model was trained:
+I fine-tuned **EfficientNetB3**, a CNN architecture known for its balance of speed and accuracy. Here's how the model was trained:
 
 | **Parameter**       | **Value**              |
 |---------------------|------------------------|
@@ -39,7 +39,7 @@ We fine-tuned **EfficientNetB3**, a powerful CNN architecture known for its bala
 | Dataset             | Custom + DFDC subset   |
 | Labels              | `0 = Fake`, `1 = Real` |
 
-We applied:
+I applied:
 - **Data Augmentation:** Random flips, brightness, contrast
 - **Class Balancing:** Undersampling or weighted loss to reduce bias
 - **Validation Strategy:** 80/20 train/val split
